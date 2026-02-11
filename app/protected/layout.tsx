@@ -1,6 +1,4 @@
 import { AuthButton } from "@/components/auth-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { hasEnvVars } from "@/lib/utils";
 import { Suspense } from "react";
 
 export default function ProtectedLayout({
@@ -19,13 +17,16 @@ export default function ProtectedLayout({
                 <DeployButton />
               </div> */}
             </div>
-            {!hasEnvVars ? (
+            {/* {!hasEnvVars ? (
               <EnvVarWarning />
             ) : (
               <Suspense>
                 <AuthButton />
               </Suspense>
-            )}
+            )} */}
+            <Suspense>
+              <AuthButton />
+            </Suspense>
           </div>
         </nav>
         <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
