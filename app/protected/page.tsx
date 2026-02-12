@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
-
+import Home from "../page";
+import { Toaster } from "sonner";
 async function UserDetails() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
@@ -17,13 +18,16 @@ async function UserDetails() {
 
 export default function ProtectedPage() {
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="w-full">
-        {" "}
-        <Suspense>
-          <UserDetails />
-        </Suspense>
-      </div>
-    </div>
+    // <div className="flex-1 w-full flex flex-col gap-12">
+    //   <div className="w-full">
+    //     {" "}
+    //     <Suspense>
+    //       <UserDetails />
+    //     </Suspense>
+    //   </div>
+    // </div>
+    <>
+      <Home />
+    </>
   );
 }

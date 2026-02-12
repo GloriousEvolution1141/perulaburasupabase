@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
 import { LogoutButton } from "./logout-button";
-import { ThemeSwitcher } from "./theme-switcher";
+import { Button } from "./ui/button";
+import { DialogJobForm } from "./cards/card-forms";
 
 export async function AuthButton() {
   const supabase = await createClient();
@@ -14,19 +14,20 @@ export async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <ThemeSwitcher />
+      <DialogJobForm />
+
       {/* Hey, {user.email}! */}
       <LogoutButton />
     </div>
   ) : (
-    <div className="flex gap-2">
-      {/* <ThemeSwitcher /> */}
-      <Button asChild size="sm" variant={"outline"}>
-        <Link href="/auth/login">Iniciar sesión</Link>
+    <div className="flex gap-4">
+      <Button asChild>
+        <Link href="/auth/login">Acceder</Link>
       </Button>
-      {/* <Button asChild size="sm" variant={"default"}>
-        <Link href="/auth/sign-up">Registrarse</Link>
-      </Button> */}
+
+      <Button asChild>
+        <Link href="/auth/sign-up">Registrar</Link>
+      </Button>
     </div>
   );
 }
