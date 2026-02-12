@@ -40,20 +40,15 @@ export function DialogCard({
       </DialogTrigger>
 
       <DialogPortal>
-        {/* Fondo difuminado */}
         <DialogOverlay className="fixed inset-0 bg-black/10 backdrop-blur-sm" />
 
-        {/* Contenido del modal */}
         <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:max-w-sm !duration-0">
-          {/* Header con título */}
           <DialogHeader>
             <DialogTitle>Detalles de Oferta</DialogTitle>
           </DialogHeader>
           <hr className="border-t border-gray-300" />
 
-          {/* Contenido principal */}
           <div className="flex flex-col gap-3 ">
-            {/* Ubicación y fecha */}
             <div className="flex items-center justify-center gap-3">
               <Badge
                 variant="secondary"
@@ -71,10 +66,8 @@ export function DialogCard({
               </Badge>
             </div>
 
-            {/* Título de la oferta */}
             <h2 className="text-xl font-bold text-center">{title}</h2>
 
-            {/* Salario */}
             <div className="flex items-center justify-center gap-1 text-green-400 font-semibold">
               <Badge
                 variant="outline"
@@ -85,11 +78,9 @@ export function DialogCard({
               </Badge>
             </div>
 
-            {/* Descripción */}
             <p className="text-sm text-gray-600 text-center">{description}</p>
           </div>
 
-          {/* Footer con botones centrados */}
           <DialogFooter className="flex gap-4 sm:justify-center mt-4">
             <Button variant="outline" className="flex items-center gap-2 px-6">
               <MdLocalPhone />

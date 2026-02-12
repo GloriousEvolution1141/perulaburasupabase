@@ -25,7 +25,6 @@ export default function Home() {
       <nav className="sticky top-0 border-b border-border bg-white dark:bg-[#0B1B2B] z-50">
         {" "}
         <div className="flex h-16 w-full items-center justify-between px-6">
-          {/* IZQUIERDA — Logo */}
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 overflow-hidden rounded-lg bg-red-600">
               <Image
@@ -44,15 +43,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* CENTRO — Buscador expandible */}
           <div className="hidden w-full max-w-md md:flex">
-            {/* <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Buscar empleo..."
-                className="pl-9  border-none text-white placeholder:text-gray-400 focus-visible:ring-0"
-              />
-            </div> */}
             <InputGroup className="relative w-full">
               <InputGroupInput placeholder="Buscar empleo..." />
               <InputGroupAddon>
@@ -60,7 +51,6 @@ export default function Home() {
               </InputGroupAddon>
             </InputGroup>
           </div>
-          {/* DERECHA — Acciones */}
 
           <div className="flex items-center gap-4">
             <ThemeSwitcher></ThemeSwitcher>
