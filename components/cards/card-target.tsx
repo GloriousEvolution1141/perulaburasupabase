@@ -1,9 +1,10 @@
-"use client"; // necesario para onClick
+"use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Banknote, Eye } from "lucide-react";
-import { Search, Moon, MapPin, Plus, Calendar } from "lucide-react";
+import { Banknote, Calendar, Eye, MapPin } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+import { MdLocalPhone } from "react-icons/md";
+import { DialogCard } from "./modal-card-target"; // tu ruta
 
 import { Button } from "@/components/ui/button";
 import {
@@ -39,27 +40,27 @@ export function CardSmall({
         <div className="flex items-start justify-between w-full gap-2">
           <CardTitle className="line-clamp-2 ">{title}</CardTitle>
           <div>
-            {" "}
-            <Button size="icon" variant="outline">
-              <Eye className="h-3 w-3" />
-            </Button>
+            <DialogCard
+              title={title}
+              salary={salary}
+              location={location}
+              date={date}
+              description={description}
+            />
           </div>
         </div>
 
         <div className="flex items-center gap-4 text-xs text-gray-700 mt-1">
-          {/* Salario */}
           <div className="flex items-center gap-1 text-green-600 font-medium">
             <Banknote className="h-3 w-3" />
             <span>{salary}</span>
           </div>
 
-          {/* Lugar */}
           <div className="flex items-center gap-1">
             <MapPin className="h-3 w-3 text-gray-400" />
             <span>{location}</span>
           </div>
 
-          {/* Fecha de emisión */}
           <div className="flex items-center gap-1">
             <Calendar className="h-3 w-3 text-gray-400" />
             <span>{date}</span>
@@ -74,7 +75,6 @@ export function CardSmall({
       </CardContent>
 
       <CardFooter className="grid grid-cols-3 gap-0 px-3 items-center">
-        {/* Zona 1: Badge */}
         <div className="flex justify-start">
           {badgeText && (
             <Badge
@@ -86,7 +86,6 @@ export function CardSmall({
           )}
         </div>
 
-        {/* Zona 2+3: Botón ocupa las 2 columnas restantes */}
         <div className="col-span-2 flex justify-end">
           {onAction && (
             <Button
@@ -94,7 +93,10 @@ export function CardSmall({
               className="w-full max-w-[200px]"
               onClick={onAction}
             >
-              Postular
+              {/* Postular */}
+              <MdLocalPhone className="text-white-500 mr-2" />
+
+              <FaWhatsapp className="text-white-500 mr-2" />
             </Button>
           )}
         </div>

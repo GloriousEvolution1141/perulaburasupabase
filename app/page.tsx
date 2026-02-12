@@ -1,8 +1,8 @@
 import { AuthButton } from "@/components/auth-button";
+import { ListaTrabajos } from "@/components/cards/ListaTrabajos";
+import { MapPin, Search } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
-import { ListaTrabajos } from "@/components/cards/ListaTrabajos";
-import { Search, Moon, MapPin, Plus } from "lucide-react";
 
 import {
   InputGroup,
@@ -10,14 +10,14 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function Home() {
   return (
