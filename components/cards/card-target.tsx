@@ -1,10 +1,10 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Banknote, Calendar, Eye, MapPin } from "lucide-react";
+import { Banknote, Calendar, MapPin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdLocalPhone } from "react-icons/md";
-import { DialogCard } from "./modal-card-target"; // tu ruta
+import { DialogCard } from "./modal-card-target";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,14 +15,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 interface CardSmallProps {
-  title: string;
-  salary: string;
-  location: string;
-  date: string;
-  description: string;
+  title?: string;
+  salary?: string;
+  location?: string;
+  date?: string;
+  description?: string;
   badgeText?: string;
   onAction?: () => void;
+  isLoading?: boolean; // <-- nuevo prop
 }
 
 export function CardSmall({
@@ -33,19 +36,76 @@ export function CardSmall({
   description,
   badgeText,
   onAction,
+  isLoading = false,
 }: CardSmallProps) {
+  function formatDate(fecha: string, format: "short" | "long" = "short") {
+    const dateObj = new Date(fecha);
+
+    if (format === "short") {
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const month = dateObj
+        .toLocaleString("es-ES", { month: "short" })
+        .toUpperCase();
+      return `${day}-${month}`;
+    }
+
+    if (format === "long") {
+      return dateObj.toLocaleDateString("es-PE", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+    }
+
+    return fecha;
+  }
+
+  // Render Skeleton
+  if (isLoading) {
+    return (
+      <Card className="w-[250px] max-w-sm gap-0 py-4">
+        <CardHeader className="px-3">
+          <div className="flex items-start justify-between w-full gap-2">
+            <Skeleton className="h-5 w-2/3 rounded" />
+            <Skeleton className="h-5 w-6 rounded" />
+          </div>
+
+          <div className="flex items-center gap-4 text-xs text-gray-700 mt-2">
+            <Skeleton className="h-3 w-10 rounded" />
+            <Skeleton className="h-3 w-12 rounded" />
+            <Skeleton className="h-3 w-8 rounded" />
+          </div>
+        </CardHeader>
+
+        <CardContent className="h-[95px] overflow-hidden px-3 pt-2">
+          <Skeleton className="h-4 w-full mb-1 rounded" />
+          <Skeleton className="h-4 w-full mb-1 rounded" />
+          <Skeleton className="h-4 w-3/4 rounded" />
+        </CardContent>
+
+        <CardFooter className="grid grid-cols-3 gap-0 px-3 items-center">
+          <Skeleton className="h-6 w-16 rounded" />
+          <div className="col-span-2 flex justify-center gap-2">
+            <Skeleton className="h-8 w-32 rounded" />
+          </div>
+        </CardFooter>
+      </Card>
+    );
+  }
+
+  // Render Card real
   return (
-    <Card className=" w-[250px] max-w-sm gap-0 py-4">
+    <Card className="w-[250px] max-w-sm gap-0 py-4">
       <CardHeader className="px-3">
         <div className="flex items-start justify-between w-full gap-2">
-          <CardTitle className="line-clamp-2 ">{title}</CardTitle>
+          <CardTitle className="line-clamp-2">{title}</CardTitle>
           <div>
             <DialogCard
-              title={title}
-              salary={salary}
-              location={location}
-              date={date}
-              description={description}
+              title={title!}
+              salary={salary!}
+              location={location!}
+              date={date!}
+              description={description!}
             />
           </div>
         </div>
@@ -53,22 +113,22 @@ export function CardSmall({
         <div className="flex items-center gap-4 text-xs text-gray-700 mt-1">
           <div className="flex items-center gap-1 text-green-600 font-medium">
             <Banknote className="h-3 w-3" />
-            <span>{salary}</span>
+            <span>S/. {salary}</span>
           </div>
 
-          <div className="flex items-center gap-1">
-            <MapPin className="h-3 w-3 text-gray-400" />
+          <div className="flex items-center gap-1 uppercase text-gray-400">
+            <MapPin className="h-3 w-3" />
             <span>{location}</span>
           </div>
 
-          <div className="flex items-center gap-1">
-            <Calendar className="h-3 w-3 text-gray-400" />
-            <span>{date}</span>
+          <div className="flex items-center gap-1 text-gray-400">
+            <Calendar className="h-3 w-3" />
+            <span>{formatDate(date!, "short")}</span>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="h-[95px] overflow-hidden px-3">
+      <CardContent className="h-[95px] overflow-hidden px-3 pt-2">
         <p className="line-clamp-4 text-sm text-muted-foreground">
           {description}
         </p>
@@ -93,10 +153,8 @@ export function CardSmall({
               className="w-full max-w-[200px]"
               onClick={onAction}
             >
-              {/* Postular */}
-              <MdLocalPhone className="text-white-500 mr-2" />
-
-              <FaWhatsapp className="text-white-500 mr-2" />
+              <MdLocalPhone className="text-white mr-2" />
+              <FaWhatsapp className="text-white mr-2" />
             </Button>
           )}
         </div>

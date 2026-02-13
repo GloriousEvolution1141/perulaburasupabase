@@ -31,6 +31,27 @@ export function DialogCard({
   date,
   description,
 }: DialogDemoProps) {
+  function formatDate(fecha: string, format: "short" | "long" = "short") {
+    const date = new Date(fecha);
+
+    if (format === "short") {
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = date
+        .toLocaleString("es-ES", { month: "short" })
+        .toUpperCase();
+      return `${day}-${month}`;
+    }
+
+    if (format === "long") {
+      return date.toLocaleDateString("es-PE", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+    }
+
+    return fecha;
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -62,7 +83,7 @@ export function DialogCard({
                 className="flex items-center gap-1 uppercase"
               >
                 <Calendar className="h-3 w-3 text-gray-400" />
-                {date}
+                {formatDate(date, "long")}
               </Badge>
             </div>
 
@@ -74,7 +95,7 @@ export function DialogCard({
                 className="bg-green-100 border-green-500 text-green-700 flex items-center gap-1"
               >
                 <Banknote className="h-5 w-5" />
-                {salary}
+                S/. {salary}
               </Badge>
             </div>
 

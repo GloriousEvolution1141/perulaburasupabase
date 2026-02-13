@@ -13,5 +13,9 @@ export function LogoutButton() {
     router.push("/");
   };
 
-  return <Button onClick={logout}>Salir</Button>;
+  return (
+    <Button onClick={logout} className="min-w-[120px]">
+      Salir
+    </Button>
+  );
 }
