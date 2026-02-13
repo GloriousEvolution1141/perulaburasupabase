@@ -1,31 +1,48 @@
-import { createClient } from "@/lib/supabase/server";
+"use client";
+
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { LogoutButton } from "./logout-button";
 import { Button } from "./ui/button";
 import { DialogJobForm } from "./cards/card-forms";
 
-export async function AuthButton() {
-  const supabase = await createClient();
+export function AuthButton() {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
 
-  // You can also use getUser() which will be slower.
-  const { data } = await supabase.auth.getClaims();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getClaims();
+      setUser(data?.claims || null);
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
 
-  const user = data?.claims;
+  if (loading) {
+    // Skeleton mientras se carga
+    return (
+      <div className="flex gap-4">
+        <div className="w-[120px] h-10 bg-gray-300 rounded animate-pulse"></div>
+        <div className="w-[120px] h-10 bg-gray-300 rounded animate-pulse"></div>
+      </div>
+    );
+  }
 
   return user ? (
     <div className="flex items-center gap-4">
       <DialogJobForm />
-
-      {/* Hey, {user.email}! */}
       <LogoutButton />
     </div>
   ) : (
     <div className="flex gap-4">
-      <Button asChild className="min-w-[120px]">
-        <Link href="/auth/sign-up">Registrar</Link>
-      </Button>
-      <Button asChild className="min-w-[120px]">
+      <Button variant={"outline"} asChild className="min-w-[120px]">
         <Link href="/auth/login">Entrar</Link>
+      </Button>
+      <Button variant={"ghost"} asChild className="min-w-[120px]">
+        <Link href="/auth/sign-up">Registrar</Link>
       </Button>
     </div>
   );

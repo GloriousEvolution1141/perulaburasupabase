@@ -10,7 +10,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-
+import { ThemeSwitcher } from "../theme-switcher";
 export default function NavBar() {
   return (
     <nav className="sticky top-0 border-b border-border bg-white dark:bg-[#0B1B2B] z-50">
@@ -44,6 +44,7 @@ export default function NavBar() {
         </div>
 
         <div className="flex-shrink-0 flex items-center gap-4 min-w-[350px]">
+          <ThemeSwitcher></ThemeSwitcher>
           <DropdownSelect items={Departamento} defaultValue="Tacna" />
           <Suspense>
             <AuthButton />

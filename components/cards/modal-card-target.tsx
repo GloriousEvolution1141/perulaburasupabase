@@ -15,13 +15,16 @@ import { FaWhatsapp } from "react-icons/fa";
 import { MdLocalPhone } from "react-icons/md";
 import { Banknote, Calendar, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
+import { CardActions } from "./buttonOptions";
 interface DialogDemoProps {
   title: string;
   salary: string;
   location: string;
   date: string;
   description: string;
+  permiteLlamadas?: boolean;
+  permiteWhatsapp?: boolean;
+  contact?: string;
 }
 
 export function DialogCard({
@@ -30,6 +33,9 @@ export function DialogCard({
   location,
   date,
   description,
+  permiteLlamadas,
+  permiteWhatsapp,
+  contact,
 }: DialogDemoProps) {
   function formatDate(fecha: string, format: "short" | "long" = "short") {
     const date = new Date(fecha);
@@ -103,7 +109,10 @@ export function DialogCard({
           </div>
 
           <DialogFooter className="flex gap-4 sm:justify-center mt-4">
-            <Button variant="outline" className="flex items-center gap-2 px-6">
+            {/* <Button
+              variant="outline"
+              className="flex items-center gap-2 px-6 bg-blue-600 hover:bg-blue-700 text-white hover:text-white"
+            >
               <MdLocalPhone />
               Llamar
             </Button>
@@ -113,7 +122,13 @@ export function DialogCard({
             >
               <FaWhatsapp />
               WhatsApp
-            </Button>
+            </Button> */}
+            <CardActions
+              permiteLlamadas={permiteLlamadas}
+              permiteWhatsapp={permiteWhatsapp}
+              contact={contact}
+              title={title}
+            />
           </DialogFooter>
         </DialogContent>
       </DialogPortal>

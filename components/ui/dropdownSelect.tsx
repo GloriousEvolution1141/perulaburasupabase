@@ -33,7 +33,10 @@ export function DropdownSelect({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         {/* <Button className="flex items-center gap-1"> */}
-        <Button className="flex items-center gap-1 w-32 justify-center">
+        <Button
+          variant={"secondary"}
+          className="flex items-center gap-1 w-32 justify-center"
+        >
           <MapPin className="h-4 w-4" />
           {selected}
         </Button>

@@ -5,6 +5,7 @@ import { Banknote, Calendar, MapPin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdLocalPhone } from "react-icons/md";
 import { DialogCard } from "./modal-card-target";
+import { CardActions } from "./buttonOptions"; // <-- importa tu nuevo componente
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,6 +25,10 @@ interface CardSmallProps {
   date?: string;
   description?: string;
   badgeText?: string;
+  permiteLlamadas?: boolean;
+  permiteWhatsapp?: boolean;
+  contact?: string;
+  pageName?: string;
   onAction?: () => void;
   isLoading?: boolean; // <-- nuevo prop
 }
@@ -35,6 +40,10 @@ export function CardSmall({
   date,
   description,
   badgeText,
+  permiteLlamadas,
+  permiteWhatsapp,
+  contact,
+  pageName,
   onAction,
   isLoading = false,
 }: CardSmallProps) {
@@ -70,7 +79,7 @@ export function CardSmall({
             <Skeleton className="h-5 w-6 rounded" />
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-gray-700 mt-2">
+          <div className="flex items-center gap-4 text-xs text-gray-700 mt-0">
             <Skeleton className="h-3 w-10 rounded" />
             <Skeleton className="h-3 w-12 rounded" />
             <Skeleton className="h-3 w-8 rounded" />
@@ -95,10 +104,10 @@ export function CardSmall({
 
   // Render Card real
   return (
-    <Card className="w-[250px] max-w-sm gap-0 py-4">
-      <CardHeader className="px-3">
-        <div className="flex items-start justify-between w-full gap-2">
-          <CardTitle className="line-clamp-2">{title}</CardTitle>
+    <Card className="w-[250px] max-w-sm gap-0 py-2">
+      <CardHeader className="px-3 gap-0">
+        <div className="flex items-center justify-between w-full gap-2">
+          <CardTitle className="line-clamp-1">{title}</CardTitle>
           <div>
             <DialogCard
               title={title!}
@@ -106,19 +115,24 @@ export function CardSmall({
               location={location!}
               date={date!}
               description={description!}
+              permiteLlamadas={permiteLlamadas}
+              permiteWhatsapp={permiteWhatsapp}
+              contact={contact}
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-xs text-gray-700 mt-1">
+        <div className="flex items-center gap-4 text-xs text-gray-700 mt-0">
           <div className="flex items-center gap-1 text-green-600 font-medium">
             <Banknote className="h-3 w-3" />
             <span>S/. {salary}</span>
           </div>
 
-          <div className="flex items-center gap-1 uppercase text-gray-400">
-            <MapPin className="h-3 w-3" />
-            <span>{location}</span>
+          <div className="flex items-center gap-1 uppercase text-gray-400 hidden">
+            <MapPin className="h-3 w-3 flex-shrink-0" />
+            <span className="flex-1 overflow-hidden whitespace-nowrap text-ellipsis">
+              {location}
+            </span>
           </div>
 
           <div className="flex items-center gap-1 text-gray-400">
@@ -146,18 +160,12 @@ export function CardSmall({
           )}
         </div>
 
-        <div className="col-span-2 flex justify-end">
-          {onAction && (
-            <Button
-              size="sm"
-              className="w-full max-w-[200px]"
-              onClick={onAction}
-            >
-              <MdLocalPhone className="text-white mr-2" />
-              <FaWhatsapp className="text-white mr-2" />
-            </Button>
-          )}
-        </div>
+        <CardActions
+          permiteLlamadas={permiteLlamadas}
+          permiteWhatsapp={permiteWhatsapp}
+          contact={contact}
+          title={title}
+        />
       </CardFooter>
     </Card>
   );

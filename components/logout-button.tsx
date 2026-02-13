@@ -14,7 +14,7 @@ export function LogoutButton() {
   };
 
   return (
-    <Button onClick={logout} className="min-w-[120px]">
+    <Button variant={"secondary"} onClick={logout} className="min-w-[120px]">
       Salir
     </Button>
   );

@@ -51,7 +51,7 @@ import { createClient } from "@/lib/supabase/client";
 
 export function ListaTrabajos() {
   const [jobs, setJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true); // <-- estado de carga
+  const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function ListaTrabajos() {
       } else {
         setJobs(data || []);
       }
-      setLoading(false); // <-- carga finalizada
+      setLoading(false);
     };
 
     fetchJobs();
@@ -75,12 +75,10 @@ export function ListaTrabajos() {
   return (
     <div className="flex flex-wrap gap-4">
       {loading
-        ? // Mientras carga, mostramos 4 skeletons de prueba
-          Array(28)
+        ? Array(28)
             .fill(0)
             .map((_, i) => <CardSmall key={i} isLoading />)
-        : // Cuando llegan los datos, mostramos las cards reales
-          jobs.map((job) => (
+        : jobs.map((job) => (
             <CardSmall
               key={job.id}
               title={job.titulo}
@@ -89,7 +87,10 @@ export function ListaTrabajos() {
               date={job.fecha_emision}
               description={job.descripcion}
               badgeText={job.tiempo_restante}
-              onAction={() => alert(`Postulaste a ${job.titulo}`)}
+              permiteLlamadas={job.permite_llamadas} // <-- aquí
+              permiteWhatsapp={job.permite_whatsapp} // <-- y aquí
+              contact={job.numero_contacto}
+              // onAction={() => alert(`Postulaste a ${job.titulo}`)}
             />
           ))}
     </div>
