@@ -24,16 +24,18 @@ export function AuthButton() {
   if (loading) {
     // Skeleton mientras se carga
     return (
-      <div className="flex gap-4">
-        <div className="w-[120px] h-10 bg-gray-300 rounded animate-pulse"></div>
-        <div className="w-[120px] h-10 bg-gray-300 rounded animate-pulse"></div>
-      </div>
+      <>
+        <div className="flex items-center gap-4">
+          <div className="w-[121px] h-9 bg-gray-300 rounded animate-pulse"></div>
+          <div className="w-[120px] h-9 bg-gray-300 rounded animate-pulse"></div>
+        </div>
+      </>
     );
   }
 
   return user ? (
     <div className="flex items-center gap-4">
-      <DialogJobForm />
+      <DialogJobForm user={user} />
       <LogoutButton />
     </div>
   ) : (

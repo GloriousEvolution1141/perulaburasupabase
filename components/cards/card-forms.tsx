@@ -1,6 +1,9 @@
 "use client";
+import { User } from "@supabase/supabase-js";
 
 import React, { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdLocalPhone } from "react-icons/md";
 import { DepartamentoSelect } from "./DepartamentoSelect";
@@ -24,185 +27,209 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { DatePickerDemo } from "./DatePickerDemo";
 
-export function DialogJobForm() {
+export function DialogJobForm({ user }: { user: User | null }) {
+  const supabase = createClient();
+  const router = useRouter();
+
   const [whatsapp, setWhatsapp] = useState(false);
   const [call, setCall] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedDepartamento, setSelectedDepartamento] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handlePostular = () => {
+  const [fechaFinalizacion, setFechaFinalizacion] = useState<Date | null>(null);
+
+  const handlePostular = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      toast.error("Debes iniciar sesión");
+      setLoading(false);
+      return;
+    }
+
+    const form = e.target as HTMLFormElement; // 👈 CAMBIO
+    const formData = new FormData(form);
+
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const salary = formData.get("salary") as string;
+    const contact = formData.get("contact") as string;
+
+    if (!selectedDepartamento) {
+      toast.error("Debes seleccionar un departamento");
+      setLoading(false);
+      return;
+    }
+
+    if (!fechaFinalizacion) {
+      toast.error("Debes seleccionar una fecha de finalización");
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.from("empleos").insert([
+      {
+        usuario_id: user.id,
+        titulo: title,
+        descripcion: description,
+        salario: salary ? Number(salary) : null,
+        departamento_id: Number(selectedDepartamento),
+        fecha_emision: new Date().toISOString(),
+        fecha_finalizacion: fechaFinalizacion.toISOString(),
+        numero_contacto: contact,
+        permite_llamadas: call,
+        permite_whatsapp: whatsapp,
+      },
+    ]);
+
+    if (error) {
+      console.error(error);
+      toast.error("Error al crear el empleo");
+      setLoading(false);
+      return;
+    }
+
+    toast.success("¡Empleo creado correctamente!");
+
     setOpen(false);
-    toast.success("¡Postulación enviada correctamente!", {
-      position: "top-left",
-      duration: 1000,
-    });
-    // Resetear estados mínimos
     setWhatsapp(false);
     setCall(false);
     setSelectedDepartamento("");
+    setLoading(false);
+
+    window.location.reload();
+    // router.refresh();
   };
 
   return (
-    <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <form>
-          <DialogTrigger asChild>
-            <Button variant="destructive" className="min-w-[120px]">
-              Crear Empleo
-            </Button>
-          </DialogTrigger>
-          <DialogPortal>
-            <DialogOverlay className="fixed inset-0 bg-black/10 backdrop-blur-sm" />
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="destructive" className="min-w-[120px]">
+          Crear Empleo
+        </Button>
+      </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg !duration-0">
-              <DialogHeader>
-                <DialogTitle>Crear un Empleo</DialogTitle>
-                <DialogDescription>
-                  Completa la información del puesto y los medios de contacto.
-                </DialogDescription>
-              </DialogHeader>
+      <DialogPortal>
+        <DialogOverlay className="fixed inset-0 bg-black/10 backdrop-blur-sm" />
 
-              <FieldGroup>
-                {/* Título y Ubicación */}
-                <div className="grid grid-cols-2 gap-4">
-                  <Field>
-                    <Label htmlFor="title">Título del puesto</Label>
-                    <Input
-                      id="title"
-                      name="title"
-                      placeholder="Ej: Desarrollador Frontend"
-                      required
-                      pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+"
-                      title="Solo se permiten letras y espacios"
-                    />
-                  </Field>
-                  <Field>
-                    <Label htmlFor="location">Departamento</Label>
-                    <DepartamentoSelect
-                      value={selectedDepartamento}
-                      onChange={(val) => setSelectedDepartamento(val)}
-                    />
-                  </Field>
-                </div>
+        <DialogContent className="sm:max-w-lg !duration-0">
+          <DialogHeader>
+            <DialogTitle>Crear un Empleo</DialogTitle>
+            <DialogDescription>
+              Completa la información del puesto y los medios de contacto.
+            </DialogDescription>
+          </DialogHeader>
 
-                {/* Descripción */}
+          <form onSubmit={handlePostular}>
+            <FieldGroup>
+              <div className="grid grid-cols-2 gap-4">
                 <Field>
-                  <Label htmlFor="description">Descripción del puesto</Label>
-                  <Textarea
-                    id="description"
-                    name="description"
-                    placeholder="Breve descripción de responsabilidades y requisitos"
-                    rows={4}
+                  <Label htmlFor="title">Título del puesto</Label>
+                  <Input
+                    id="title"
+                    name="title"
+                    placeholder="Ej: Desarrollador Frontend"
                     required
-                    onInput={(e) => {
-                      const target = e.target as HTMLTextAreaElement;
-                      target.value = target.value.replace(
-                        /[^A-Za-zÁÉÍÓÚáéíóúñÑ0-9.,;:\s]/g,
-                        "",
-                      );
-                    }}
                   />
                 </Field>
 
-                {/* Salario y Fecha */}
-                <div className="grid grid-cols-2 gap-4">
-                  <Field>
-                    <Label htmlFor="salary">Salario estimado S/.</Label>
-                    <Input
-                      id="salary"
-                      name="salary"
-                      placeholder="Ej: S/ 3000"
-                      required
-                      pattern="[0-9]+"
-                      title="Ingrese solo números"
-                    />
-                  </Field>
-                  <Input
-                    id="fecha_emision"
-                    name="fecha_emision"
-                    type="hidden"
-                    defaultValue={new Date().toISOString().split("T")[0]}
+                <Field>
+                  <Label>Departamento</Label>
+                  <DepartamentoSelect
+                    value={selectedDepartamento}
+                    onChange={(val) => setSelectedDepartamento(val)}
                   />
+                </Field>
+              </div>
 
-                  <Field>
-                    <Label htmlFor="date">Fecha de finalización</Label>
-                    <DatePickerDemo />
-                  </Field>
-                </div>
+              <Field>
+                <Label htmlFor="description">Descripción del puesto</Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  rows={4}
+                  required
+                />
+              </Field>
 
-                {/* Medio de contacto */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                  <div className="space-y-3">
-                    <Label>Medio de contacto</Label>
-                    <div className="flex gap-6">
-                      <button
-                        type="button"
-                        onClick={() => setWhatsapp(!whatsapp)}
-                        className={`w-24 h-9 flex items-center justify-center rounded-lg border transition ${
-                          whatsapp
-                            ? "bg-green-500 text-white border-green-500"
-                            : "bg-transparent text-green-500 border-green-500"
-                        }`}
-                      >
-                        <FaWhatsapp size={20} />
-                      </button>
+              <div className="grid grid-cols-2 gap-4">
+                <Field>
+                  <Label htmlFor="salary">Salario estimado S/.</Label>
+                  <Input id="salary" name="salary" required pattern="[0-9]+" />
+                </Field>
 
-                      <button
-                        type="button"
-                        onClick={() => setCall(!call)}
-                        className={`w-24 h-9 flex items-center justify-center rounded-lg border transition ${
-                          call
-                            ? "bg-blue-500 text-white border-blue-500"
-                            : "bg-transparent text-blue-500 border-blue-500"
-                        }`}
-                      >
-                        <MdLocalPhone size={20} />
-                      </button>
-                    </div>
-                  </div>
+                <Field>
+                  <Label>Fecha de finalización</Label>
+                  <DatePickerDemo
+                    value={fechaFinalizacion}
+                    onChange={setFechaFinalizacion}
+                  />{" "}
+                </Field>
+              </div>
 
-                  <Field>
-                    <Label htmlFor="contact">Número de contacto</Label>
-                    <Input
-                      id="contact"
-                      name="contact"
-                      placeholder="987654321"
-                      disabled={!(whatsapp || call)}
-                      required={whatsapp || call}
-                      className={`transition-colors ${
-                        whatsapp || call
-                          ? "bg-white text-black border-gray-300"
-                          : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div className="space-y-3">
+                  <Label>Medio de contacto</Label>
+                  <div className="flex gap-6">
+                    <button
+                      type="button"
+                      onClick={() => setWhatsapp(!whatsapp)}
+                      className={`w-24 h-9 flex items-center justify-center rounded-lg border transition ${
+                        whatsapp
+                          ? "bg-green-500 text-white border-green-500"
+                          : "text-green-500 border-green-500"
                       }`}
-                      pattern="[0-9]+"
-                      title="Ingrese solo números"
-                    />
-                  </Field>
+                    >
+                      <FaWhatsapp size={20} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setCall(!call)}
+                      className={`w-24 h-9 flex items-center justify-center rounded-lg border transition ${
+                        call
+                          ? "bg-blue-500 text-white border-blue-500"
+                          : "text-blue-500 border-blue-500"
+                      }`}
+                    >
+                      <MdLocalPhone size={20} />
+                    </button>
+                  </div>
                 </div>
-              </FieldGroup>
 
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setWhatsapp(false);
-                      setCall(false);
-                      setSelectedDepartamento("");
-                    }}
-                  >
-                    Cancelar
-                  </Button>
-                </DialogClose>
+                <Field>
+                  <Label htmlFor="contact">Número de contacto</Label>
+                  <Input
+                    id="contact"
+                    name="contact"
+                    disabled={!(whatsapp || call)}
+                    required={whatsapp || call}
+                    pattern="[0-9]+"
+                  />
+                </Field>
+              </div>
+            </FieldGroup>
 
-                <Button type="button" onClick={handlePostular}>
-                  Postular
+            <DialogFooter className="mt-4">
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Cancelar
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </DialogPortal>
-        </form>
-      </Dialog>
-    </>
+              </DialogClose>
+
+              <Button type="submit" disabled={loading}>
+                {loading ? "Creando..." : "Crear Empleo"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   );
 }

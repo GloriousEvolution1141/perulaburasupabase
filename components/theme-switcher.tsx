@@ -11,6 +11,7 @@ import {
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
@@ -22,7 +23,7 @@ const ThemeSwitcher = () => {
   }, []);
 
   if (!mounted) {
-    return null;
+    return <Skeleton className="h-9 w-8 rounded-md" />;
   }
 
   const ICON_SIZE = 16;

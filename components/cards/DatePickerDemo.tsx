@@ -11,11 +11,15 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { ChevronDownIcon } from "lucide-react";
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>();
+
+type DatePickerDemoProps = {
+  value: Date | null;
+  onChange: (date: Date | null) => void;
+};
+
+export function DatePickerDemo({ value, onChange }: DatePickerDemoProps) {
   const [open, setOpen] = React.useState(false);
 
-  // Función para capitalizar la primera letra
   const formatDateES = (date: Date) => {
     const formatted = format(date, "PPP", { locale: es });
     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
@@ -26,27 +30,27 @@ export function DatePickerDemo() {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between font-normal "
+          className="w-full justify-between font-normal"
         >
-          {date ? (
-            formatDateES(date)
+          {value ? (
+            formatDateES(value)
           ) : (
             <span className="text-gray-500">Selecciona el día</span>
           )}
           <ChevronDownIcon className="size-4 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className=" w-[150%] p-0" align="start">
+      <PopoverContent className="w-[150%] p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
+          selected={value ?? undefined}
           onSelect={(selectedDate) => {
-            setDate(selectedDate);
-            setOpen(false); // cierra el popover al seleccionar
+            onChange(selectedDate ?? null); // 🔥 enviamos al padre
+            setOpen(false);
           }}
           locale={es}
-          weekStartsOn={0} // 🌟 0 = domingo, 1 = lunes
-          disabled={{ before: new Date() }} // 🌟 deshabilita días anteriores a hoy
+          weekStartsOn={0}
+          disabled={{ before: new Date() }}
         />
       </PopoverContent>
     </Popover>

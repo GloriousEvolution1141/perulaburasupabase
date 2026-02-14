@@ -1,4 +1,4 @@
-import { Departamento } from "@/app/data/provincia";
+import { Departamentos } from "@/app/data/provincia";
 import { AuthButton } from "@/components/auth-button";
 import { ListaTrabajos } from "@/components/cards/ListaTrabajos";
 import { MapPin, Search } from "lucide-react";
@@ -21,6 +21,7 @@ export default function NavBar() {
               src="/favicon.ico"
               alt="PeruLabura Logo"
               fill
+              sizes="32px"
               className="object-contain p-2"
             />
           </div>
@@ -44,9 +45,12 @@ export default function NavBar() {
         </div>
 
         <div className="flex-shrink-0 flex items-center gap-4 min-w-[350px]">
-          <ThemeSwitcher></ThemeSwitcher>
-          <DropdownSelect items={Departamento} defaultValue="Tacna" />
           <Suspense>
+            <ThemeSwitcher />
+            <DropdownSelect
+              items={Departamentos.map((d) => d.name)}
+              defaultValue="Tacna"
+            />{" "}
             <AuthButton />
           </Suspense>
         </div>

@@ -6,12 +6,11 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
-import { Departamento } from "@/app/data/provincia";
+import { Departamentos } from "@/app/data/provincia";
 
 export function DepartamentoSelect({
   value,
@@ -23,13 +22,18 @@ export function DepartamentoSelect({
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Seleccione uno" />
+        <SelectValue placeholder="Seleccione un departamento" />
       </SelectTrigger>
+
       <SelectContent className="!max-h-60" position="popper">
         <SelectGroup>
-          {Departamento.map((dep) => (
-            <SelectItem key={dep} value={dep}>
-              {dep}
+          {Departamentos.map((dep) => (
+            <SelectItem
+              key={dep.id}
+              defaultValue={"Tacna"}
+              value={dep.id.toString()}
+            >
+              {dep.name}
             </SelectItem>
           ))}
         </SelectGroup>
