@@ -14,7 +14,7 @@ export default function Home() {
           <ContentMain />
         </SearchProvider>
       </div>
-      <SharedInputs />;
+      {/* <SharedInputs />; */}
     </>
   );
 }
