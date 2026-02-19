@@ -33,7 +33,7 @@ export function CardActions({
     if (tipo === "whatsapp") {
       // Mensaje de WhatsApp predeterminado
       const mensaje = encodeURIComponent(
-        `Hola, estoy interesado en la publicación "${title}" en TacnaLabura.`,
+        `Hola, estoy interesado en la publicación de empleo de "${title}" en tacnalabura.vercel.app.`,
       );
       window.open(`https://wa.me/${contact}?text=${mensaje}`, "_blank");
     }

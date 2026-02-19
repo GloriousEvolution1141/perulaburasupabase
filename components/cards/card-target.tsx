@@ -106,7 +106,7 @@ export function CardSmall({
   return (
     <Card
       className="w-[250px] max-w-sm gap-0 py-2 
-                 max-sm:w-[185px] max-sm:py-1"
+                 max-sm:w-[170px] max-sm:py-2"
     >
       <CardHeader className="px-3 gap-0">
         <div className="flex items-center justify-between w-full gap-2">
