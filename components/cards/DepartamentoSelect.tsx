@@ -22,7 +22,7 @@ export function DepartamentoSelect({
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Seleccione un departamento" />
+        <SelectValue placeholder="Seleccione" />
       </SelectTrigger>
 
       <SelectContent className="!max-h-60" position="popper">

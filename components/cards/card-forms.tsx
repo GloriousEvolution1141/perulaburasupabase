@@ -134,7 +134,7 @@ export function DialogJobForm({ user }: { user: User | null }) {
                   <Input
                     id="title"
                     name="title"
-                    placeholder="Ej: Desarrollador Frontend"
+                    placeholder="Ej: Cocinero, almacenero, etc"
                     required
                   />
                 </Field>
@@ -155,13 +155,20 @@ export function DialogJobForm({ user }: { user: User | null }) {
                   name="description"
                   rows={4}
                   required
+                  placeholder="Explica en qué consiste el trabajo."
                 />
               </Field>
 
               <div className="grid grid-cols-2 gap-4">
                 <Field>
                   <Label htmlFor="salary">Salario estimado S/.</Label>
-                  <Input id="salary" name="salary" required pattern="[0-9]+" />
+                  <Input
+                    id="salary"
+                    name="salary"
+                    required
+                    pattern="[0-9]+"
+                    placeholder="S/. 1130"
+                  />
                 </Field>
 
                 <Field>
@@ -169,14 +176,14 @@ export function DialogJobForm({ user }: { user: User | null }) {
                   <DatePickerDemo
                     value={fechaFinalizacion}
                     onChange={setFechaFinalizacion}
-                  />{" "}
+                  />
                 </Field>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 <div className="space-y-3">
                   <Label>Medio de contacto</Label>
-                  <div className="flex gap-6">
+                  <div className="flex gap-6 justify-center items-center">
                     <button
                       type="button"
                       onClick={() => setWhatsapp(!whatsapp)}
@@ -211,6 +218,11 @@ export function DialogJobForm({ user }: { user: User | null }) {
                     disabled={!(whatsapp || call)}
                     required={whatsapp || call}
                     pattern="[0-9]+"
+                    placeholder="987 654 321"
+                    className={`
+  transition
+  ${whatsapp || call ? "bg-white" : "bg-gray-300"}
+`}
                   />
                 </Field>
               </div>

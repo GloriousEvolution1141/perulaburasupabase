@@ -21,7 +21,7 @@ export function ListaTrabajosClient({ initialJobs }: { initialJobs: any[] }) {
   }, [search, jobs]);
 
   return (
-    <div className="flex flex-col items-center w-full p-4">
+    <div className="flex flex-col items-center w-full p-4 md:mb-12">
       {/* Input opcional dentro de la lista */}
       <input
         type="text"

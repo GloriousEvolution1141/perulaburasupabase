@@ -81,7 +81,7 @@ export default function NavBar({}: {}) {
           isMobileMenuOpen ? "max-h-96" : "max-h-0"
         }`}
       >
-        <div className="px-4 pb-4 flex flex-col items-center gap-3">
+        <div className="px-4 pb-4 flex flex-col items-center gap-3 mt-2">
           <InputGroup className="relative w-full">
             <InputGroupInput
               placeholder="Buscar empleo..."

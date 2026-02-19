@@ -108,7 +108,7 @@ export function DialogCard({
             <p className="text-sm text-gray-600 text-center">{description}</p>
           </div>
 
-          <DialogFooter className="flex gap-4 sm:justify-center mt-4">
+          <DialogFooter className="flex gap-4 sm:justify-center items-center mt-4">
             {/* <Button
               variant="outline"
               className="flex items-center gap-2 px-6 bg-blue-600 hover:bg-blue-700 text-white hover:text-white"

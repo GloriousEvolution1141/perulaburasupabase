@@ -108,10 +108,10 @@ export function CardSmall({
       className="w-[250px] max-w-sm gap-0 py-2 
                  max-sm:w-[170px] max-sm:py-2"
     >
-      <CardHeader className="px-3 gap-0">
+      <CardHeader className="px-3 flex flex-col gap-2">
         <div className="flex items-center justify-between w-full gap-2">
-          <CardTitle className="line-clamp-1">{title}</CardTitle>
-          <div>
+          <CardTitle className="line-clamp-2 max-w-[80%]">{title}</CardTitle>
+          <div className="flex-shrink-0">
             <DialogCard
               title={title!}
               salary={salary!}
