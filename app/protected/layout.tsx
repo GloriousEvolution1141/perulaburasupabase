@@ -1,5 +1,5 @@
 import { Toaster } from "sonner";
-
+import FooterMain from "@/components/content/FooterMain";
 export default function ProtectedLayout({
   children,
 }: {
@@ -10,7 +10,11 @@ export default function ProtectedLayout({
       {/* <Suspense>
         <AuthButton />
       </Suspense> */}
-      <div> {children}</div>
+      <div>
+        {" "}
+        {children}
+        <FooterMain />
+      </div>
     </>
   );
 }

@@ -24,7 +24,6 @@ function ListaTrabajosSkeleton() {
 
                 <div className="flex items-center gap-4 text-xs text-gray-700 mt-0">
                   <Skeleton className="h-3 w-10 rounded" />
-                  {/* <Skeleton className="h-3 w-12 rounded" /> */}
                   <Skeleton className="h-3 w-8 rounded" />
                 </div>
               </CardHeader>

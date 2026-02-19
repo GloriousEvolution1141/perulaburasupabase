@@ -10,21 +10,23 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { MapPin } from "lucide-react";
-
 interface DropdownSelectProps {
-  items: readonly string[]; // <-- aceptar readonly arrays
+  items: readonly string[];
   defaultValue?: string;
   onChange?: (value: string) => void;
+  disabled?: boolean; // <-- nueva prop
 }
 
 export function DropdownSelect({
   items,
   defaultValue,
   onChange,
+  disabled = false, // valor por defecto
 }: DropdownSelectProps) {
   const [selected, setSelected] = useState(defaultValue || items[0]);
 
   const handleSelect = (value: string) => {
+    if (disabled) return; // prevenir cambios si está deshabilitado
     setSelected(value);
     if (onChange) onChange(value);
   };
@@ -32,22 +34,24 @@ export function DropdownSelect({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        {/* <Button className="flex items-center gap-1"> */}
         <Button
-          variant={"secondary"}
+          variant="secondary"
           className="flex items-center gap-1 w-32 justify-center"
+          disabled={disabled} // <-- deshabilitar el botón
         >
           <MapPin className="h-4 w-4" />
           {selected}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {items.map((item) => (
-          <DropdownMenuItem key={item} onClick={() => handleSelect(item)}>
-            {item}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
+      {!disabled && ( // <-- ocultar items si está deshabilitado
+        <DropdownMenuContent>
+          {items.map((item) => (
+            <DropdownMenuItem key={item} onClick={() => handleSelect(item)}>
+              {item}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      )}
     </DropdownMenu>
   );
 }

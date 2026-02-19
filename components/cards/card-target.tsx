@@ -72,7 +72,7 @@ export function CardSmall({
   // Render Skeleton
   if (isLoading) {
     return (
-      <Card className="w-[250px] max-w-sm gap-0 py-4">
+      <Card className="w-[20px] max-w-sm gap-0 py-4">
         <CardHeader className="px-3">
           <div className="flex items-start justify-between w-full gap-2">
             <Skeleton className="h-5 w-2/3 rounded" />
@@ -104,7 +104,10 @@ export function CardSmall({
 
   // Render Card real
   return (
-    <Card className="w-[250px] max-w-sm gap-0 py-2">
+    <Card
+      className="w-[250px] max-w-sm gap-0 py-2 
+                 max-sm:w-[185px] max-sm:py-1"
+    >
       <CardHeader className="px-3 gap-0">
         <div className="flex items-center justify-between w-full gap-2">
           <CardTitle className="line-clamp-1">{title}</CardTitle>
@@ -153,7 +156,7 @@ export function CardSmall({
           {badgeText && (
             <Badge
               variant="outline"
-              className="bg-red-100 border-red-500 text-red-700"
+              className="bg-red-100 border-red-500 text-red-700 text-[10px] px-1 py-0.5 sm:text-xs sm:px-2 sm:py-1"
             >
               {badgeText}
             </Badge>
