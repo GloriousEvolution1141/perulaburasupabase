@@ -32,7 +32,7 @@ export function ListaTrabajosClient({ initialJobs }: { initialJobs: any[] }) {
       />
 
       {/* Lista de trabajos */}
-      <div className="flex flex-wrap justify-start gap-5 max-w-fit mx-auto h-[90%]">
+      <div className="flex flex-wrap justify-start gap-2 sm:gap-5 max-w-fit mx-auto h-[90%]">
         {loading
           ? Array(28)
               .fill(0)

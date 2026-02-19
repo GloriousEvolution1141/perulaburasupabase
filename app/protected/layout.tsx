@@ -10,11 +10,7 @@ export default function ProtectedLayout({
       {/* <Suspense>
         <AuthButton />
       </Suspense> */}
-      <div>
-        {" "}
-        {children}
-        <FooterMain />
-      </div>
+      <div> {children}</div>
     </>
   );
 }
