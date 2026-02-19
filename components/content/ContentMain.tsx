@@ -15,7 +15,11 @@ function ListaTrabajosSkeleton() {
         .fill(0)
         .map((_, i) => (
           <div key={i}>
-            <Card className="w-[250px] max-w-sm gap-0 py-4">
+            <Card
+              className="w-[250px] max-w-sm gap-0 py-2 
+                 max-sm:w-[170px] max-sm:py-2"
+            >
+              {" "}
               <CardHeader className="px-3">
                 <div className="flex items-start justify-between w-full gap-2">
                   <Skeleton className="h-5 w-2/3 rounded" />
@@ -27,13 +31,11 @@ function ListaTrabajosSkeleton() {
                   <Skeleton className="h-3 w-8 rounded" />
                 </div>
               </CardHeader>
-
               <CardContent className="h-[95px] overflow-hidden px-3 pt-2">
                 <Skeleton className="h-4 w-full mb-1 rounded" />
                 <Skeleton className="h-4 w-full mb-1 rounded" />
                 <Skeleton className="h-4 w-3/4 rounded" />
               </CardContent>
-
               <CardFooter className="grid grid-cols-3 gap-0 px-3 items-center">
                 <Skeleton className="h-6 w-16 rounded" />
                 <div className="col-span-2 flex justify-center gap-2">

@@ -78,7 +78,7 @@ export function DialogJobForm({ user }: { user: User | null }) {
         usuario_id: user.id,
         titulo: title,
         descripcion: description,
-        salario: salary ? Number(salary) : null,
+        salario: salary && salary.trim() !== "" ? Number(salary) : null,
         departamento_id: Number(selectedDepartamento),
         fecha_emision: new Date().toISOString(),
         fecha_finalizacion: fechaFinalizacion.toISOString(),
@@ -165,10 +165,19 @@ export function DialogJobForm({ user }: { user: User | null }) {
                   <Input
                     id="salary"
                     name="salary"
-                    required
-                    pattern="[0-9]+"
-                    placeholder="S/. 1130"
-                  />
+                    type="number"
+                    max={999999}
+                    min={0}
+                    onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                      if (e.currentTarget.value.length > 6) {
+                        e.currentTarget.value = e.currentTarget.value.slice(
+                          0,
+                          6,
+                        );
+                      }
+                    }}
+                    placeholder="Ej: 1130"
+                  />{" "}
                 </Field>
 
                 <Field>
@@ -215,14 +224,14 @@ export function DialogJobForm({ user }: { user: User | null }) {
                   <Input
                     id="contact"
                     name="contact"
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength={9}
+                    pattern="[0-9]{9}"
                     disabled={!(whatsapp || call)}
                     required={whatsapp || call}
-                    pattern="[0-9]+"
-                    placeholder="987 654 321"
-                    className={`
-  transition
-  ${whatsapp || call ? "bg-white" : "bg-gray-300"}
-`}
+                    placeholder="987654321"
+                    className={`transition ${whatsapp || call ? "bg-white" : "bg-gray-300"}`}
                   />
                 </Field>
               </div>

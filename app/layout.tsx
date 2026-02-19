@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Toaster } from "sonner";
 import FooterMain from "@/components/content/FooterMain";
+import { SearchProvider } from "./pruebaContext/SearchContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -36,7 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SearchProvider>{children}</SearchProvider>
         </ThemeProvider>
         <FooterMain />
 

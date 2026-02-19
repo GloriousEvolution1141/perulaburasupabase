@@ -101,7 +101,7 @@ export function DialogCard({
                 className="bg-green-100 border-green-500 text-green-700 flex items-center gap-1"
               >
                 <Banknote className="h-5 w-5" />
-                S/. {salary}
+                <span>{salary ? `S/. ${salary}` : "No definido"}</span>
               </Badge>
             </div>
 
