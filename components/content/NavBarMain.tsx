@@ -19,7 +19,7 @@ export default function NavBar({}: {}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 border-b border-border bg-white dark:bg-[#0B1B2B] z-50">
+    <nav className="sticky top-0 border-b border-border bg-white dark:bg-[#0B1B2B] z-50 shadow-sm">
       <div className="flex h-16 w-full items-center justify-between px-4">
         {/* LOGO */}
         <div className="flex items-center gap-3">

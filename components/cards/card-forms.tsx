@@ -39,6 +39,10 @@ export function DialogJobForm({ user }: { user: User | null }) {
 
   const [fechaFinalizacion, setFechaFinalizacion] = useState<Date | null>(null);
 
+  // Estados controlados para filtrar código
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   const handlePostular = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -53,11 +57,10 @@ export function DialogJobForm({ user }: { user: User | null }) {
       return;
     }
 
-    const form = e.target as HTMLFormElement; // 👈 CAMBIO
+    const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
 
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
+    // Usar los estados filtrados
     const salary = formData.get("salary") as string;
     const contact = formData.get("contact") as string;
 
@@ -69,6 +72,15 @@ export function DialogJobForm({ user }: { user: User | null }) {
 
     if (!fechaFinalizacion) {
       toast.error("Debes seleccionar una fecha de finalización");
+      setLoading(false);
+      return;
+    }
+
+    // Validación extra por seguridad
+    if (/[<>\/{}]/.test(title) || /[<>\/{}]/.test(description)) {
+      toast.error(
+        "Los campos no pueden contener caracteres de código (< > { } /)",
+      );
       setLoading(false);
       return;
     }
@@ -97,10 +109,14 @@ export function DialogJobForm({ user }: { user: User | null }) {
 
     toast.success("¡Empleo creado correctamente!");
 
+    // Reset de formulario
     setOpen(false);
     setWhatsapp(false);
     setCall(false);
     setSelectedDepartamento("");
+    setTitle("");
+    setDescription("");
+    setFechaFinalizacion(null);
     setLoading(false);
 
     window.location.reload();
@@ -136,6 +152,10 @@ export function DialogJobForm({ user }: { user: User | null }) {
                     name="title"
                     placeholder="Ej: Cocinero, almacenero, etc"
                     required
+                    value={title}
+                    onChange={(e) =>
+                      setTitle(e.target.value.replace(/[<>\/{}]/g, ""))
+                    }
                   />
                 </Field>
 
@@ -156,6 +176,10 @@ export function DialogJobForm({ user }: { user: User | null }) {
                   rows={4}
                   required
                   placeholder="Explica en qué consiste el trabajo."
+                  value={description}
+                  onChange={(e) =>
+                    setDescription(e.target.value.replace(/[<>\/{}]/g, ""))
+                  }
                 />
               </Field>
 
@@ -231,7 +255,9 @@ export function DialogJobForm({ user }: { user: User | null }) {
                     disabled={!(whatsapp || call)}
                     required={whatsapp || call}
                     placeholder="987654321"
-                    className={`transition ${whatsapp || call ? "bg-white" : "bg-gray-300"}`}
+                    className={`transition ${
+                      whatsapp || call ? "bg-white" : "bg-gray-300"
+                    }`}
                   />
                 </Field>
               </div>

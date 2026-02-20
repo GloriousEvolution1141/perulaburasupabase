@@ -108,7 +108,7 @@ export function CardSmall({
   return (
     <Card
       className="w-[250px] max-w-sm gap-0 py-2 
-                 max-sm:w-[170px] max-sm:py-2"
+                 max-sm:w-[170px] max-sm:py-2 hover:shadow-lg transition"
     >
       <CardHeader className="px-3 flex flex-col gap-2">
         <div className="flex items-center justify-between w-full gap-2">
@@ -126,7 +126,6 @@ export function CardSmall({
             />
           </div>
         </div>
-
         <div className="flex items-center gap-4 text-xs text-gray-700 mt-0">
           <div className="flex items-center gap-1 font-medium">
             <Banknote className="h-3 w-3 text-green-600" />
